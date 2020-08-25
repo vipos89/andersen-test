@@ -27,16 +27,13 @@ Interface UserInterface
     public function getUserById($id);
 
     /**
-     * Create | Update user
+     * Create
      *
-     * @param   UserRequest    $request
-     * @param   integer                           $id
-     *
+     * @param UserRequest $request
      * @method  POST    api/users       For Create
-     * @method  PUT     api/users/{id}  For Update
      * @access  public
      */
-    public function requestUser(UserRequest $request, $id = null);
+    public function requestUser(UserRequest $request);
 
     /**
      * Delete user

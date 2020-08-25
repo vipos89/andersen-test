@@ -21,7 +21,7 @@ trait ApiResponse
 
         $responseData = [
             'message' => $message,
-            'error' => $isSuccess,
+            'error' => !$isSuccess,
             'code' => $statusCode
         ];
 

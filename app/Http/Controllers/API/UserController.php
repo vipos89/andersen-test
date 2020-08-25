@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Interfaces\RepositoryInterfaces\UserInterface;
 use Illuminate\Http\Request;
 use DB;
@@ -26,7 +27,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): \Illuminate\Http\Response
+    public function index()
     {
         return $this->userRepository->getAllUsers();
     }
@@ -37,7 +38,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): \Illuminate\Http\Response
+    public function store(UserRequest $request)
     {
         return $this->userRepository->requestUser($request);
     }
@@ -71,7 +72,7 @@ class UserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): \Illuminate\Http\Response
+    public function destroy($id)
     {
         return $this->userRepository->deleteUser($id);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserRequest extends FormRequest
 {
@@ -30,5 +31,14 @@ class UserRequest extends FormRequest
                 : 'required|email|max:255|unique:users,email',
             'password' => request()->route('user') ? 'nullable' : 'required|max:50'
         ];
+    }
+
+    public function response(array $errors) {
+
+        // Put whatever response you want here.
+        return new JsonResponse([
+            'status' => '422',
+            'errors' => $errors,
+        ], 422);
     }
 }

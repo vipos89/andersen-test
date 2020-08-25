@@ -9,6 +9,8 @@ use App\Interfaces\RepositoryInterfaces\UserInterface;
 use App\Models\User;
 use App\Traits\Api\ApiResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserRepository implements UserInterface
 {
@@ -55,14 +57,15 @@ class UserRepository implements UserInterface
             }
             $user->fill($request->all());
             if (!$id) {
-                $user->password = \Hash::make($request->password);
+                $user->password = Hash::make($request->password);
+                $user->api_token = Str::random(80);
             }
             $user->save();
             DB::commit();
-            return $this->success(
+            return $this->successResponse(
                 $id ? "User updated"
                     : "User created",
-                $user, $id ? 200 : 201);
+                $id ? $user : ['api_token' => $user->api_token], !$id ? 200 : 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());

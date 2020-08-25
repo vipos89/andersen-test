@@ -3,62 +3,41 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use Illuminate\Http\Request;
 
 class WalletController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var WalletInterface
      */
-    public function index()
+    private $walletRepository;
+
+    public function __construct(WalletInterface $walletRepository)
     {
-        //
+        $this->walletRepository = $walletRepository;
     }
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        return $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        return $this->walletRepository->getWalletByHash($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function transactions(Request $request, $walletId)
     {
-        //
+        return $this->walletRepository->getWalletTransactions($walletId);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
