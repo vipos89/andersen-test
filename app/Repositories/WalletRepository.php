@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repositories;
 
@@ -14,10 +15,8 @@ class WalletRepository implements WalletInterface
 
     public const START_SATOSHI_BALANCE = 100000000;
 
-    /**
-     * @inheritDoc
-     */
-    public function createWallet($userId)
+
+    public function createWallet(int $userId)
     {
         $walletsCount = Wallet::where('user_id', $userId)->count();
         if ($walletsCount < config('wallets.wallets_max_count')) {

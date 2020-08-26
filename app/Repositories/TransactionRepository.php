@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Repositories;
-
 
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
 use App\Models\Wallet;
@@ -21,9 +20,11 @@ class TransactionRepository implements TransactionInterface
      * @param $amount (satoshi)
      * @return mixed|void
      */
-    public function createTransaction($walletFromId, $walletToId, $amount)
+    public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {
-        $res = (new TransactionService())->createTransaction($walletFromId, $walletToId, $amount);
+        $walletFrom = Wallet::findOrFail($walletFromId);
+        $walletTo = Wallet::findOrFail($walletToId);
+        return (new TransactionService())->createTransaction($walletFrom, $walletTo, $amount);
     }
 
     /**
@@ -32,13 +33,8 @@ class TransactionRepository implements TransactionInterface
     public function getUserTransactions($userId)
     {
         $walletIds = Wallet::where('user_id', $userId)->pluck('id')->toArray();
-        try {
-            $transactions = WalletTransaction::whereIn('from', $walletIds)
-                ->orWhereIn('to', $walletIds)
-                ->get();
-            return $this->successResponse('Success', $transactions, 200);
-        } catch (\Exception $exception) {
-            $this->errorResponse($exception->getMessage());
-        }
+        return WalletTransaction::whereIn('from', $walletIds)
+            ->orWhereIn('to', $walletIds)
+            ->get();
     }
 }

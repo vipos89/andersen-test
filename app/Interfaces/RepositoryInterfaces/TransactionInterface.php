@@ -14,7 +14,7 @@ interface TransactionInterface
      * @param $amount
      * @return mixed
      */
-    public function createTransaction($walletFrom, $walletTo, $amount);
+    public function createTransaction(string $walletFrom, string $walletTo, int $amount);
 
     /**
      * Get all  users transactions
@@ -22,6 +22,6 @@ interface TransactionInterface
      * @param $userId
      * @return mixed
      */
-    public function getUserTransactions($userId);
+    public function getUserTransactions(int $userId);
 
 }

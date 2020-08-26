@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Requests;
 
@@ -24,9 +25,9 @@ class TransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'from'=>'required|exists:App\Models\Wallet,id',
-            'to'=>'required|exists:App\Models\Wallet,id',
-            'amount'=>'required|numeric|gt:0'
+            'from' => 'required|exists:App\Models\Wallet,id',
+            'to' => 'required|exists:App\Models\Wallet,id',
+            'amount' => 'required|numeric|gt:0'
         ];
     }
 }

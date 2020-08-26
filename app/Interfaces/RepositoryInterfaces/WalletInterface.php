@@ -3,18 +3,17 @@
 
 namespace App\Interfaces\RepositoryInterfaces;
 
-
 use App\Http\Requests\UserRequest;
 
-Interface WalletInterface
+interface WalletInterface
 {
     /**
      * Create new Wallet for current user
      * @method POST api/wallets
-     * @param  $userId
+     * @param  int $userId
      * @return mixed
      */
-    public function createWallet($userId);
+    public function createWallet(int $userId);
 
     /**
      * Get wallet by address
@@ -35,5 +34,4 @@ Interface WalletInterface
      * @return mixed
      */
     public function getWalletTransactions($address);
-
 }

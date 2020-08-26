@@ -3,39 +3,45 @@
 
 namespace App\Services;
 
-
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TransactionService
 {
-    public function createTransaction($walletFromId, $walletToId, $amount)
+    /**
+     * @param Wallet $walletFrom
+     * @param Wallet $walletTo
+     * @param int $amount
+     * @return mixed
+     */
+    public function createTransaction(Wallet $walletFrom, Wallet $walletTo, int $amount)
     {
         DB::beginTransaction();
         try {
-            $walletFrom = Wallet::findOrFail($walletFromId);
-            $walletTo = Wallet::findOrFail($walletToId);
-            $commission = ($walletFrom->user_id == $walletTo->user_id) ? 0 : round(config('wallets.commission_size_in_percents') * $amount);
+            $commission = ($walletFrom->user_id === $walletTo->user_id)
+                ? 0 : round(config('wallets.commission_size_in_percents') * $amount);
             if ($walletFrom->satoshi_balance >= $commission + $amount) {
-                $transaction = WalletTransaction::create([
-                    'from' => $walletFromId,
-                    'to' => $walletToId,
-                    'amount' => $amount,
-                    'commission' => $commission
-                ]);
+                $transaction = WalletTransaction::create(
+                    [
+                        'from' => $walletFrom->user_id,
+                        'to' => $walletTo->user_id,
+                        'amount' => $amount,
+                        'commission' => $commission
+                    ]
+                );
                 $walletFrom->satoshi_balance -= ($commission + $amount);
                 $walletTo->satoshi_balance += $amount;
                 $walletFrom->save();
                 $walletTo->save();
-
+                DB::commit();
+                return $transaction;
             }
-            DB::commit();
-            return $this->successResponse('Success', $transaction);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->errorResponse($e->getMessage(), null);
-        }
 
+        } catch (\Exception $e) {
+            Log::alert($e->getMessage());
+            return false;
+        }
     }
 }

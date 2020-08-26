@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class WalletController extends Controller
 {
@@ -13,6 +15,10 @@ class WalletController extends Controller
      */
     private $walletRepository;
 
+    /**
+     * WalletController constructor.
+     * @param WalletInterface $walletRepository
+     */
     public function __construct(WalletInterface $walletRepository)
     {
         $this->walletRepository = $walletRepository;
@@ -22,20 +28,28 @@ class WalletController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function store(Request $request)
+    public function store()
     {
         return $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
     }
 
-    public function show(Request $request, $id)
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id)
     {
         return $this->walletRepository->getWalletByHash($id);
     }
 
-    public function transactions(Request $request, $walletId)
+    /**
+     * Get all transactions by Wallet
+     * @param $walletId
+     * @return mixed
+     */
+    public function transactions(string $walletId)
     {
         return $this->walletRepository->getWalletTransactions($walletId);
     }

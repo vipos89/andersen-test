@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Traits\Api;
 
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -18,20 +17,14 @@ trait ApiResponse
      */
     public function baseResponse($message, $data = null, $statusCode, $isSuccess = true): JsonResponse
     {
-        if (!$message) {
-            return $this->baseResponse();
-        }
-
         $responseData = [
             'message' => $message,
             'error' => !$isSuccess,
             'code' => $statusCode
         ];
-
         if ($isSuccess) {
             $responseData['data'] = $data;
         }
-
         return response()->json($responseData, $statusCode);
     }
 

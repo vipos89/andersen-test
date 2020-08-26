@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Requests;
 
@@ -30,7 +31,8 @@ class UserRequest extends FormRequest
             'email' => request()->route('user')
                 ? 'required|email|max:255|unique:users,email,' . request()->route('user')
                 : 'required|email|max:255|unique:users,email',
-            'password' => request()->route('user') ? 'nullable' : 'required|max:50'
+            'password' => request()->route('user')
+                ? 'nullable' : 'required|max:50'
         ];
     }
 
@@ -38,7 +40,7 @@ class UserRequest extends FormRequest
      * @param array $errors
      * @return JsonResponse
      */
-    public function response($errors =[]): JsonResponse
+    public function response($errors = []): JsonResponse
     {
         return new JsonResponse([
             'status' => Response::HTTP_UNPROCESSABLE_ENTITY,

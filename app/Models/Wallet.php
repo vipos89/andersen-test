@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -8,9 +9,12 @@ use Illuminate\Support\Str;
 
 class Wallet extends Model
 {
-    use UuidTrait;
 
     protected $guarded = [];
+    /**
+     * @var int
+     */
+    private $user_id;
 
     /**
      * @Todo remove to trait
@@ -19,7 +23,7 @@ class Wallet extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string) Str::uuid();
+            $model->{$model->getKeyName()} = (string)Str::uuid();
         });
     }
 
