@@ -5,10 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TransactionController extends Controller
 {
+    /**
+     * @var TransactionInterface
+     */
+    private $transactionRepository;
+
     public function __construct(TransactionInterface $transactionRepository)
     {
         $this->transactionRepository = $transactionRepository;
@@ -17,7 +22,7 @@ class TransactionController extends Controller
     /**
      * Display a listing of the user transactions.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -28,7 +33,7 @@ class TransactionController extends Controller
      * Create new transaction
      *
      * @param TransactionRequest $transactionRequest
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(TransactionRequest $transactionRequest)
     {

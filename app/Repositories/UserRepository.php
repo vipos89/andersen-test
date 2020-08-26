@@ -16,7 +16,6 @@ class UserRepository implements UserInterface
 {
     use ApiResponse;
 
-
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -66,30 +65,6 @@ class UserRepository implements UserInterface
                 $id ? "User updated"
                     : "User created",
                 $id ? $user : ['api_token' => $user->api_token], !$id ? 200 : 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error($e->getMessage(), $e->getCode());
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function deleteUser($id)
-    {
-        DB::beginTransaction();
-        try {
-            $user = User::find($id);
-
-            // Check the user
-            if (!$user) {
-                return $this->error("No user with ID $id", 404);
-            }
-
-            // Delete the user
-            $user->delete();
-            DB::commit();
-            return $this->success("User deleted", $user);
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());

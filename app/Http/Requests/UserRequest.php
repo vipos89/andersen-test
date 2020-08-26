@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserRequest extends FormRequest
 {
@@ -33,12 +34,15 @@ class UserRequest extends FormRequest
         ];
     }
 
-    public function response(array $errors) {
-
-        // Put whatever response you want here.
+    /**
+     * @param array $errors
+     * @return JsonResponse
+     */
+    public function response($errors =[]): JsonResponse
+    {
         return new JsonResponse([
-            'status' => '422',
+            'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
             'errors' => $errors,
-        ], 422);
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Http\Resources\WalletResource;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
@@ -14,13 +12,7 @@ class WalletRepository implements WalletInterface
 {
     use ApiResponse;
 
-    /**
-     * @inheritDoc
-     */
-    public function getUserWallets()
-    {
-        // TODO: Implement getUserWallets() method.
-    }
+    public const START_SATOSHI_BALANCE = 100000000;
 
     /**
      * @inheritDoc
@@ -31,7 +23,7 @@ class WalletRepository implements WalletInterface
         if ($walletsCount < config('wallets.wallets_max_count')) {
             $wallet = Wallet::create([
                 'user_id' => $userId,
-                'satoshi_balance' => 100000000
+                'satoshi_balance' => self::START_SATOSHI_BALANCE
             ]);
             return $this->successResponse('success', new WalletResource($wallet), 200);
         }

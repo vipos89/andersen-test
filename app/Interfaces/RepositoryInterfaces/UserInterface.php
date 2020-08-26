@@ -19,9 +19,11 @@ Interface UserInterface
     /**
      * Get User By ID
      *
-     * @param   integer     $id
+     * @param integer $id
      *
-     * @method  GET api/users/{id}
+     * @method  GET api/users/{
+    id
+    }
      * @access  public
      */
     public function getUserById($id);
@@ -34,15 +36,4 @@ Interface UserInterface
      * @access  public
      */
     public function requestUser(UserRequest $request);
-
-    /**
-     * Delete user
-     *
-     * @param   integer     $id
-     *
-     * @method  DELETE  api/users/{id}
-     * @access  public
-     */
-    public function deleteUser($id);
-
 }

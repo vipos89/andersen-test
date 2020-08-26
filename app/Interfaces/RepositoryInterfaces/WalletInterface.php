@@ -9,14 +9,6 @@ use App\Http\Requests\UserRequest;
 Interface WalletInterface
 {
     /**
-     * Get user's wallets
-     *
-     * @method  GET api/wallets
-     *
-     */
-    public function getUserWallets();
-
-    /**
      * Create new Wallet for current user
      * @method POST api/wallets
      * @param  $userId
@@ -26,7 +18,9 @@ Interface WalletInterface
 
     /**
      * Get wallet by address
-     * @method GET api/wallets/{address}
+     * @method GET api/wallets/{
+    address
+    }
      * @param $address
      * @return mixed
      */
@@ -34,7 +28,9 @@ Interface WalletInterface
 
     /**
      * Get wallet transactions
-     * @method GET api/wallets/{address}/transactions
+     * @method GET api/wallets/{
+    address
+    }/transactions
      * @param $address
      * @return mixed
      */

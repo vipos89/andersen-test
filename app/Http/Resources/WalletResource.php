@@ -10,15 +10,15 @@ class WalletResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id'=> $this->id,
-            'btc'=>$this->btc_balance,
-            'usd'=>Coindesk::toCurrency('usd', $this->btc_balance)
+            'id' => $this->id,
+            'btc' => $this->btc_balance,
+            'usd' => Coindesk::toCurrency('usd', $this->btc_balance)
         ];
     }
 }
