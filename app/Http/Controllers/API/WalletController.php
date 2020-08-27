@@ -29,7 +29,6 @@ class WalletController extends Controller
         $this->walletRepository = $walletRepository;
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
