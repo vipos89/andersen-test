@@ -35,7 +35,7 @@ class WalletController extends Controller
      *
      * @return JsonResponse
      */
-    public function store()
+    public function store(): JsonResponse
     {
         try {
             $data = $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
@@ -46,22 +46,34 @@ class WalletController extends Controller
     }
 
     /**
-     * @param  $id
-     * @return mixed
+     * Get wallet info
+     *
+     * @param string $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(string $id): JsonResponse
     {
-        return $this->walletRepository->getWalletByHash($id);
+        try {
+            $data = $this->walletRepository->getWalletByHash($id);
+            return $this->successResponse('Wallet info', $data);
+        } catch (\Exception $exception) {
+            return $this->errorResponse($exception->getMessage(), []);
+        }
     }
 
     /**
      * Get all transactions by Wallet
      *
-     * @param  $walletId
-     * @return mixed
+     * @param string $walletId
+     * @return JsonResponse
      */
-    public function transactions(string $walletId)
+    public function transactions(string $walletId): JsonResponse
     {
-        return $this->walletRepository->getWalletTransactions($walletId);
+        try {
+            $data = $this->walletRepository->getWalletTransactions($walletId);
+            return $this->successResponse('Transactions info', $data);
+        } catch (\Exception $exception) {
+            return $this->errorResponse($exception->getMessage(), []);
+        }
     }
 }
