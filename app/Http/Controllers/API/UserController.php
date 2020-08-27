@@ -6,12 +6,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Interfaces\RepositoryInterfaces\UserInterface;
+use App\Traits\Api\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-
+    use ApiResponse;
     /**
      * @var UserInterface
      */
@@ -19,6 +21,7 @@ class UserController extends Controller
 
     /**
      * UserController constructor.
+     *
      * @param UserInterface $userRepository
      */
     public function __construct(UserInterface $userRepository)
@@ -27,48 +30,18 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Store a newly created user in storage.
      *
-     * @return Response
+     * @param  UserRequest $request
+     * @return JsonResponse
      */
-    public function index()
+    public function store(UserRequest $request): JsonResponse
     {
-        return $this->userRepository->getAllUsers();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param UserRequest $request
-     * @return Response
-     */
-    public function store(UserRequest $request)
-    {
-        return $this->userRepository->requestUser($request);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
-        return $this->userRepository->getUserById($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function update(Request $request, $id): Response
-    {
-        return $this->userRepository->requestUser($request, $id);
+        try {
+            $user = $this->userRepository->requestUser($request);
+            return  $this->successResponse('User created', ['api_token'=>$user->api_token]);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), []);
+        }
     }
 }

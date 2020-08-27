@@ -9,10 +9,10 @@ use Illuminate\Http\Response;
 trait ApiResponse
 {
     /**
-     * @param $message
-     * @param null $data
-     * @param $statusCode
-     * @param bool $isSuccess
+     * @param  $message
+     * @param  null $data
+     * @param  $statusCode
+     * @param  bool $isSuccess
      * @return JsonResponse
      */
     public function baseResponse($message, $data = null, $statusCode, $isSuccess = true): JsonResponse
@@ -29,9 +29,9 @@ trait ApiResponse
     }
 
     /**
-     * @param $message
-     * @param $data
-     * @param int $code
+     * @param  $message
+     * @param  $data
+     * @param  int $code
      * @return JsonResponse
      */
     public function successResponse($message, $data, $code = Response::HTTP_OK): JsonResponse
@@ -40,9 +40,9 @@ trait ApiResponse
     }
 
     /**
-     * @param $message
-     * @param $data
-     * @param int $code
+     * @param  $message
+     * @param  $data
+     * @param  int $code
      * @return JsonResponse
      */
     public function errorResponse($message, $data, $code = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse

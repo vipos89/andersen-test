@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
 use App\Traits\Api\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class TransactionController extends Controller
@@ -20,6 +21,7 @@ class TransactionController extends Controller
 
     /**
      * TransactionController constructor.
+     *
      * @param TransactionInterface $transactionRepository repository
      */
     public function __construct(TransactionInterface $transactionRepository)
@@ -30,18 +32,24 @@ class TransactionController extends Controller
     /**
      * Display a listing of the user transactions.
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->transactionRepository
-            ->getUserTransactions(auth()->user()->getAuthIdentifier());
+        try {
+            $data = $this->transactionRepository
+                ->getUserTransactions(auth()->user()->getAuthIdentifier());
+            return $this->successResponse('User transactions', $data);
+        } catch (\Exception $exception) {
+            return $this->errorResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
      * Create new transaction
-     * @param TransactionRequest $transactionRequest
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @param  TransactionRequest $transactionRequest
+     * @return JsonResponse
      */
     public function store(TransactionRequest $transactionRequest)
     {
@@ -53,7 +61,7 @@ class TransactionController extends Controller
             );
             return $this->successResponse('Success', $res);
         } catch (\Exception $exception) {
-            return $this->errorResponse('Error');
+            return $this->errorResponse($exception->getMessage(), null);
         }
     }
 }

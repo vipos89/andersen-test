@@ -37,14 +37,16 @@ class UserRequest extends FormRequest
     }
 
     /**
-     * @param array $errors
+     * @param  array $errors
      * @return JsonResponse
      */
     public function response($errors = []): JsonResponse
     {
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
             'errors' => $errors,
-        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY
+        );
     }
 }

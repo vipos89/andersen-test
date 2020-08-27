@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Commission;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\DB;
@@ -11,10 +12,11 @@ use Illuminate\Support\Facades\Log;
 class TransactionService
 {
     /**
-     * @param Wallet $walletFrom
-     * @param Wallet $walletTo
-     * @param int $amount
+     * @param  Wallet $walletFrom
+     * @param  Wallet $walletTo
+     * @param  int    $amount
      * @return mixed
+     * @throws \Exception
      */
     public function createTransaction(Wallet $walletFrom, Wallet $walletTo, int $amount)
     {
@@ -25,8 +27,8 @@ class TransactionService
             if ($walletFrom->satoshi_balance >= $commission + $amount) {
                 $transaction = WalletTransaction::create(
                     [
-                        'from' => $walletFrom->user_id,
-                        'to' => $walletTo->user_id,
+                        'from' => $walletFrom->id,
+                        'to' => $walletTo->id,
                         'amount' => $amount,
                         'commission' => $commission
                     ]
@@ -35,13 +37,19 @@ class TransactionService
                 $walletTo->satoshi_balance += $amount;
                 $walletFrom->save();
                 $walletTo->save();
+                Commission::create(
+                    [
+                        'transaction_id' => $transaction->id,
+                        'commission' => $commission,
+                    ]
+                );
                 DB::commit();
                 return $transaction;
             }
-
+            throw new \Exception('Not enough credentials');
         } catch (\Exception $e) {
             Log::alert($e->getMessage());
-            return false;
+            throw new \Exception($e->getMessage());
         }
     }
 }

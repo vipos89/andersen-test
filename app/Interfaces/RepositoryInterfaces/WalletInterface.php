@@ -3,12 +3,12 @@
 
 namespace App\Interfaces\RepositoryInterfaces;
 
-use App\Http\Requests\UserRequest;
 
 interface WalletInterface
 {
     /**
      * Create new Wallet for current user
+     *
      * @method POST api/wallets
      * @param  int $userId
      * @return mixed
@@ -17,21 +17,23 @@ interface WalletInterface
 
     /**
      * Get wallet by address
+     *
      * @method GET api/wallets/{
     address
     }
-     * @param $address
+     * @param  $address
      * @return mixed
      */
-    public function getWalletByHash($address);
+    public function getWalletByHash(string $address);
 
     /**
      * Get wallet transactions
+     *
      * @method GET api/wallets/{
-    address
-    }/transactions
-     * @param $address
+     * address
+     * }/transactions
+     * @param  $address
      * @return mixed
      */
-    public function getWalletTransactions($address);
+    public function getWalletTransactions(string $address);
 }

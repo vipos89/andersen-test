@@ -7,6 +7,10 @@ use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @property mixed satoshi_balance
+ * @property int user_id
+ */
 class Wallet extends Model
 {
 
@@ -22,9 +26,11 @@ class Wallet extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string)Str::uuid();
-        });
+        static::creating(
+            function ($model) {
+                $model->{$model->getKeyName()} = (string)Str::uuid();
+            }
+        );
     }
 
 
@@ -32,5 +38,4 @@ class Wallet extends Model
     {
         return $this->attributes['satoshi_balance'] / 100000000;
     }
-
 }

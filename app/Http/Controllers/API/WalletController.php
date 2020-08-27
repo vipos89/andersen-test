@@ -5,11 +5,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
+use App\Traits\Api\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class WalletController extends Controller
 {
+    use ApiResponse;
+
     /**
      * @var WalletInterface
      */
@@ -17,6 +21,7 @@ class WalletController extends Controller
 
     /**
      * WalletController constructor.
+     *
      * @param WalletInterface $walletRepository
      */
     public function __construct(WalletInterface $walletRepository)
@@ -28,15 +33,20 @@ class WalletController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function store()
     {
-        return $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
+        try {
+            $data = $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
+            return $this->successResponse('Wallet created', $data);
+        } catch (\Exception $exception) {
+            return $this->errorResponse($exception->getMessage(), []);
+        }
     }
 
     /**
-     * @param $id
+     * @param  $id
      * @return mixed
      */
     public function show($id)
@@ -46,12 +56,12 @@ class WalletController extends Controller
 
     /**
      * Get all transactions by Wallet
-     * @param $walletId
+     *
+     * @param  $walletId
      * @return mixed
      */
     public function transactions(string $walletId)
     {
         return $this->walletRepository->getWalletTransactions($walletId);
     }
-
 }

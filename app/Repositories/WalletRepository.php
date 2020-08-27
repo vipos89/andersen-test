@@ -16,43 +16,46 @@ class WalletRepository implements WalletInterface
     public const START_SATOSHI_BALANCE = 100000000;
 
 
-    public function createWallet(int $userId)
+    /**
+     * @param  int $userId
+     * @return Wallet
+     * @throws \Exception
+     */
+    public function createWallet(int $userId): Wallet
     {
         $walletsCount = Wallet::where('user_id', $userId)->count();
         if ($walletsCount < config('wallets.wallets_max_count')) {
-            $wallet = Wallet::create([
+            return Wallet::create(
+                [
                 'user_id' => $userId,
                 'satoshi_balance' => self::START_SATOSHI_BALANCE
-            ]);
-            return $this->successResponse('success', new WalletResource($wallet), 200);
+                ]
+            );
         }
-        return $this->errorResponse('You can\'t create wallet', [], 403);
+        throw new \Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
     }
 
     /**
-     * @inheritDoc
+     * Get info about wallet by hash
+     *
+     * @param  string $hash
+     * @return WalletResource
      */
-    public function getWalletByHash($hash)
+    public function getWalletByHash(string $hash): WalletResource
     {
-        try {
-            return $this->successResponse('Success', new WalletResource(Wallet::findOrFail($hash)), 200);
-        } catch (\Exception $e) {
-            return $this->errorResponse('Wallet not found', [], 404);
-        }
+        return WalletResource(Wallet::findOrFail($hash));
     }
 
     /**
-     * @inheritDoc
+     * Get all transactions by wallet
+     *
+     * @param  string $address
+     * @return Collection|WalletTransaction
      */
-    public function getWalletTransactions($address)
+    public function getWalletTransactions(string $address)
     {
-        $transactions = WalletTransaction::where('from', $address)
+        return WalletTransaction::where('from', $address)
             ->orWhere('to', $address)
             ->get();
-        try {
-            return $this->successResponse('Success', $transactions, 200);
-        } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), null);
-        }
     }
 }

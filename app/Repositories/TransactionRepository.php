@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Services\TransactionService;
 use App\Traits\Api\ApiResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class TransactionRepository implements TransactionInterface
@@ -15,10 +16,13 @@ class TransactionRepository implements TransactionInterface
     use ApiResponse;
 
     /**
-     * @param $walletFromId
-     * @param $walletToId
-     * @param $amount (satoshi)
+     * Create transaction from wallet to wallet
+     *
+     * @param  $walletFromId
+     * @param  $walletToId
+     * @param  $amount       (satoshi)
      * @return mixed|void
+     * @throws \Exception
      */
     public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {
@@ -27,8 +31,12 @@ class TransactionRepository implements TransactionInterface
         return (new TransactionService())->createTransaction($walletFrom, $walletTo, $amount);
     }
 
+
     /**
-     * @inheritDoc
+     * Get all user transactions
+     *
+     * @param  int $userId
+     * @return Collection
      */
     public function getUserTransactions($userId)
     {
