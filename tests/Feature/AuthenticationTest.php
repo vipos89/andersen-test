@@ -16,7 +16,7 @@ class AuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function testRequiredFieldsForRegistration()
+    public function testRequiredFieldsForRegistration(): void
     {
         $this->json(
             'POST',
@@ -37,7 +37,7 @@ class AuthenticationTest extends TestCase
     /**
      *Test Email validation
      */
-    public function testEmailValidation()
+    public function testEmailValidation(): void
     {
         $userData = [
             'name' => $this->faker->name,
@@ -58,7 +58,7 @@ class AuthenticationTest extends TestCase
             ]);
     }
 
-    public function testUniqueEmail()
+    public function testUniqueEmail(): void
     {
         $userData = [
             'name' => $this->faker->name,

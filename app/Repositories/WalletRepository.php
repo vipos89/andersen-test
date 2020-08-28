@@ -46,7 +46,7 @@ class WalletRepository implements WalletInterface
      */
     public function getWalletByHash(string $hash): WalletResource
     {
-        return WalletResource(Wallet::findOrFail($hash));
+        return new WalletResource(Wallet::findOrFail($hash));
     }
 
     /**

@@ -45,7 +45,7 @@ class WalletController extends Controller
         } catch (\Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
-                Response::HTTP_EXPECTATION_FAILED
+                Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
     }
