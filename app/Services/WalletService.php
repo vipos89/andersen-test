@@ -5,12 +5,14 @@ namespace App\Services;
 
 
 use App\Models\Wallet;
+use Exception;
 
 class WalletService
 {
     /**
      * @param int $userId
      * @return Wallet
+     * @throws Exception
      */
     public function createWalletForUser(int $userId): Wallet
     {

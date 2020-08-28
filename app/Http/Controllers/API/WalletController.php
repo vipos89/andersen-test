@@ -41,7 +41,9 @@ class   WalletController extends Controller
             $data = $this->walletRepository->createWallet(
                 auth()->user()->getAuthIdentifier()
             );
-            return $this->successResponse('Wallet created', new WalletResource($data));
+            return $this->successResponse(
+                'Wallet created',
+                new WalletResource($data));
         } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),

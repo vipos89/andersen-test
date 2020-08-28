@@ -18,12 +18,14 @@ class TransactionRepository implements TransactionInterface
      * @param  $walletFromId
      * @param  $walletToId
      * @param  $amount (satoshi)
+     *
      * @return WalletTransaction
      * @throws Exception
      */
     public function createTransaction(string $walletFromId, string $walletToId, int $amount): WalletTransaction
     {
-        return (new TransactionService())->createTransaction($walletFromId, $walletToId, $amount);
+        return (new TransactionService())
+            ->createTransaction($walletFromId, $walletToId, $amount);
     }
 
 
@@ -31,6 +33,7 @@ class TransactionRepository implements TransactionInterface
      * Get all user transactions
      *
      * @param  int $userId
+     *
      * @return Collection|Wallet
      */
     public function getUserTransactions($userId): Collection

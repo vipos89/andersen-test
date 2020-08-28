@@ -15,7 +15,9 @@ class UserRepository implements UserInterface
      * Create new user
      *
      * @param UserRequest $request
+     *
      * @return User
+     *
      * @throws Exception
      */
     public function requestUser(UserRequest $request): User
