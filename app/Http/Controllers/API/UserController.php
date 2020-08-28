@@ -8,7 +8,6 @@ use App\Http\Requests\UserRequest;
 use App\Interfaces\RepositoryInterfaces\UserInterface;
 use App\Traits\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller

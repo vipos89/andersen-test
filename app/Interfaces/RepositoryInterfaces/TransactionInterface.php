@@ -9,7 +9,6 @@ interface TransactionInterface
     /**
      * Create new transaction
      *
-     * @method POST api/transactions/
      * @param  $walletFrom
      * @param  $walletTo
      * @param  $amount
@@ -20,7 +19,6 @@ interface TransactionInterface
     /**
      * Get all  users transactions
      *
-     * @method GET api/transactions/
      * @param  $userId
      * @return mixed
      */

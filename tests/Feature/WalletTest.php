@@ -43,7 +43,7 @@ class WalletTest extends TestCase
         for ($i = 0; $i < $availableWalletCount; $i++) {
             Wallet::create([
                 'user_id' => $user->id,
-                'satoshi_balance' => WalletRepository::START_SATOSHI_BALANCE
+                'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
             ]);
         }
         $this->json('POST', 'api/wallets', [], ['Accept' => 'application/json'])
@@ -59,7 +59,7 @@ class WalletTest extends TestCase
         factory(User::class, 10)->create()->each(static function ($user) {
             Wallet::create([
                 'user_id' => $user->id,
-                'satoshi_balance' => WalletRepository::START_SATOSHI_BALANCE
+                'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
             ]);
         });
         $user = User::inRandomOrder()->first();

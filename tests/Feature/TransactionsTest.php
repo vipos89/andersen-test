@@ -20,7 +20,7 @@ class TransactionsTest extends TestCase
             ->each(static function ($user) {
                 Wallet::create([
                     'user_id' => $user->id,
-                    'satoshi_balance' => WalletRepository::START_SATOSHI_BALANCE
+                    'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
                 ]);
             });
         $user = User::inRandomOrder()->first();

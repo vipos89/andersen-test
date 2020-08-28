@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\WalletResource;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use App\Traits\Api\ApiResponse;
+use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class WalletController extends Controller
+class   WalletController extends Controller
 {
     use ApiResponse;
 
@@ -42,7 +42,7 @@ class WalletController extends Controller
                 auth()->user()->getAuthIdentifier()
             );
             return $this->successResponse('Wallet created', new WalletResource($data));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
                 Response::HTTP_UNPROCESSABLE_ENTITY
@@ -61,8 +61,8 @@ class WalletController extends Controller
     {
         try {
             $data = $this->walletRepository->getWalletByHash($id);
-            return $this->successResponse('Wallet info', $data);
-        } catch (\Exception $exception) {
+            return $this->successResponse('Wallet info', new WalletResource($data));
+        } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
                 Response::HTTP_NOT_FOUND
@@ -81,8 +81,11 @@ class WalletController extends Controller
     {
         try {
             $data = $this->walletRepository->getWalletTransactions($walletId);
-            return $this->successResponse('Transactions info', $data);
-        } catch (\Exception $exception) {
+            return $this->successResponse(
+                'Transactions info',
+                WalletResource::collection($data)
+            );
+        } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
                 Response::HTTP_NOT_FOUND

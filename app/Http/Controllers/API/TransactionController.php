@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\ExceedingLimitException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
@@ -64,6 +65,11 @@ class TransactionController extends Controller
                 (int)$transactionRequest->input('amount')
             );
             return $this->successResponse('Success', $res);
+        } catch (ExceedingLimitException $exception) {
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
         } catch (\Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),

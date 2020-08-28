@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
  */
 class Wallet extends Model
 {
+    public const START_SATOSHI_BALANCE = 100000000;
 
     protected $guarded = [];
 
@@ -51,6 +52,6 @@ class Wallet extends Model
     public function getBtcBalanceAttribute(): int
     {
         return $this->attributes['satoshi_balance'] /
-            WalletRepository::START_SATOSHI_BALANCE;
+            Wallet::START_SATOSHI_BALANCE;
     }
 }

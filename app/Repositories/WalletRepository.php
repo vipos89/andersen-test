@@ -7,16 +7,12 @@ use App\Http\Resources\WalletResource;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
-use App\Traits\Api\ApiResponse;
+use App\Services\WalletService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WalletRepository implements WalletInterface
 {
-    use ApiResponse;
-
-    public const START_SATOSHI_BALANCE = 100000000;
-
-
     /**
      * @param int $userId
      *
@@ -25,16 +21,7 @@ class WalletRepository implements WalletInterface
      */
     public function createWallet(int $userId): Wallet
     {
-        $walletsCount = Wallet::where('user_id', $userId)->count();
-        if ($walletsCount < config('wallets.wallets_max_count')) {
-            return Wallet::create(
-                [
-                    'user_id' => $userId,
-                    'satoshi_balance' => self::START_SATOSHI_BALANCE
-                ]
-            );
-        }
-        throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
+        return (new WalletService())->createWalletForUser($userId);
     }
 
     /**
@@ -46,7 +33,12 @@ class WalletRepository implements WalletInterface
      */
     public function getWalletByHash(string $hash): WalletResource
     {
-        return new WalletResource(Wallet::findOrFail($hash));
+        $wallet = Wallet::find($hash);
+        if (!$wallet) {
+            throw new ModelNotFoundException('Wallet not found');
+        }
+
+        return new WalletResource($wallet);
     }
 
     /**

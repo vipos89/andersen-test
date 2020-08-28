@@ -10,12 +10,13 @@ trait ApiResponse
 {
     /**
      * @param  $message
-     * @param  null $data
+     * @param null $data
      * @param  $statusCode
-     * @param  bool $isSuccess
+     * @param bool $isSuccess
+     *
      * @return JsonResponse
      */
-    public function baseResponse($message, $data = null, $statusCode, $isSuccess = true): JsonResponse
+    public function baseResponse($message, $statusCode, $data = null, $isSuccess = true): JsonResponse
     {
         $responseData = [
             'message' => $message,
@@ -37,7 +38,7 @@ trait ApiResponse
      */
     public function successResponse($message, $data, $code = Response::HTTP_OK): JsonResponse
     {
-        return $this->baseResponse($message, $data, $code);
+        return $this->baseResponse($message, $code, $data);
     }
 
     /**
@@ -47,7 +48,7 @@ trait ApiResponse
      *
      * @return JsonResponse
      */
-    public function errorResponse($message, $code = Response::HTTP_INTERNAL_SERVER_ERROR, $data=null): JsonResponse
+    public function errorResponse($message, $code = Response::HTTP_INTERNAL_SERVER_ERROR, $data = null): JsonResponse
     {
         return $this->baseResponse($message, $data, $code);
     }
