@@ -41,14 +41,16 @@ class TransactionController extends Controller
                 ->getUserTransactions(auth()->user()->getAuthIdentifier());
             return $this->successResponse('User transactions', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+            return $this->errorResponse($exception->getMessage(),
+                Response::HTTP_NOT_FOUND);
         }
     }
 
     /**
      * Create new transaction
      *
-     * @param  TransactionRequest $transactionRequest
+     * @param  TransactionRequest $transactionRequest validation
+     *
      * @return JsonResponse
      */
     public function store(TransactionRequest $transactionRequest)

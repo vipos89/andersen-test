@@ -8,6 +8,7 @@ use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Traits\Api\ApiResponse;
+use Exception;
 
 class WalletRepository implements WalletInterface
 {
@@ -19,7 +20,7 @@ class WalletRepository implements WalletInterface
     /**
      * @param  int $userId
      * @return Wallet
-     * @throws \Exception
+     * @throws Exception
      */
     public function createWallet(int $userId): Wallet
     {
@@ -32,7 +33,7 @@ class WalletRepository implements WalletInterface
                 ]
             );
         }
-        throw new \Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
+        throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
     }
 
     /**

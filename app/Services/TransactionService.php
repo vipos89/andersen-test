@@ -12,16 +12,18 @@ use Illuminate\Support\Facades\Log;
 class TransactionService
 {
     /**
-     * @param  Wallet $walletFrom
-     * @param  Wallet $walletTo
-     * @param  int    $amount
+     * @param string $walletFromId
+     * @param string $walletToId
+     * @param int $amount
      * @return mixed
      * @throws \Exception
      */
-    public function createTransaction(Wallet $walletFrom, Wallet $walletTo, int $amount)
+    public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {
         DB::beginTransaction();
         try {
+            $walletFrom = Wallet::where('id', $walletFromId)->lockForUpdate()->firstOtFail();
+            $walletTo = Wallet::where('id', $walletToId)->lockForUpdate()->firstOtFail();
             $commission = ($walletFrom->user_id === $walletTo->user_id)
                 ? 0 : round(config('wallets.commission_size_in_percents') * $amount);
             if ($walletFrom->satoshi_balance >= $commission + $amount) {

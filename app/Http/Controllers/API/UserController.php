@@ -22,7 +22,7 @@ class UserController extends Controller
     /**
      * UserController constructor.
      *
-     * @param UserInterface $userRepository
+     * @param UserInterface $userRepository repository implementation
      */
     public function __construct(UserInterface $userRepository)
     {
@@ -32,14 +32,16 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      *
-     * @param  UserRequest $request
+     * @param  UserRequest $request validation
+     *
      * @return JsonResponse
      */
     public function store(UserRequest $request): JsonResponse
     {
         try {
             $user = $this->userRepository->requestUser($request);
-            return  $this->successResponse('User created', ['api_token'=>$user->api_token]);
+            return  $this->successResponse('User created',
+                    ['api_token'=>$user->api_token]);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), []);
         }

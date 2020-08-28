@@ -26,9 +26,7 @@ class TransactionRepository implements TransactionInterface
      */
     public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {
-        $walletFrom = Wallet::findOrFail($walletFromId);
-        $walletTo = Wallet::findOrFail($walletToId);
-        return (new TransactionService())->createTransaction($walletFrom, $walletTo, $amount);
+        return (new TransactionService())->createTransaction($walletFromId, $walletToId, $amount);
     }
 
 
