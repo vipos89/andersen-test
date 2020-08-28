@@ -29,7 +29,8 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|max:50',
             'email' => request()->route('user')
-                ? 'required|email|max:255|unique:users,email,' . request()->route('user')
+                ? 'required|email|max:255|unique:users,email,'
+                . request()->route('user')
                 : 'required|email|max:255|unique:users,email',
             'password' => request()->route('user')
                 ? 'nullable' : 'required|max:50'
@@ -37,15 +38,16 @@ class UserRequest extends FormRequest
     }
 
     /**
-     * @param  array $errors
+     * @param array $errors (errors)
+     *
      * @return JsonResponse
      */
     public function response($errors = []): JsonResponse
     {
         return new JsonResponse(
             [
-            'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-            'errors' => $errors,
+                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'errors' => $errors,
             ], Response::HTTP_UNPROCESSABLE_ENTITY
         );
     }

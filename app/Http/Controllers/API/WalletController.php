@@ -22,7 +22,7 @@ class WalletController extends Controller
     /**
      * WalletController constructor.
      *
-     * @param WalletInterface $walletRepository
+     * @param WalletInterface $walletRepository (walletRepository)
      */
     public function __construct(WalletInterface $walletRepository)
     {
@@ -37,17 +37,21 @@ class WalletController extends Controller
     public function store(): JsonResponse
     {
         try {
-            $data = $this->walletRepository->createWallet(auth()->user()->getAuthIdentifier());
+            $data = $this->walletRepository->createWallet(
+                auth()->user()->getAuthIdentifier()
+            );
             return $this->successResponse('Wallet created', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), []);
+            return $this->errorResponse($exception->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED);
         }
     }
 
     /**
      * Get wallet info
      *
-     * @param string $id
+     * @param string $id hash id of wallet
+     *
      * @return JsonResponse
      */
     public function show(string $id): JsonResponse
@@ -56,14 +60,16 @@ class WalletController extends Controller
             $data = $this->walletRepository->getWalletByHash($id);
             return $this->successResponse('Wallet info', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), []);
+            return $this->errorResponse($exception->getMessage(),
+                Response::HTTP_NOT_FOUND);
         }
     }
 
     /**
      * Get all transactions by Wallet
      *
-     * @param string $walletId
+     * @param string $walletId (wallet hash)
+     *
      * @return JsonResponse
      */
     public function transactions(string $walletId): JsonResponse
@@ -72,7 +78,8 @@ class WalletController extends Controller
             $data = $this->walletRepository->getWalletTransactions($walletId);
             return $this->successResponse('Transactions info', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), []);
+            return $this->errorResponse($exception->getMessage(),
+                Response::HTTP_NOT_FOUND);
         }
     }
 }

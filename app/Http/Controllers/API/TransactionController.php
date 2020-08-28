@@ -41,19 +41,21 @@ class TransactionController extends Controller
                 ->getUserTransactions(auth()->user()->getAuthIdentifier());
             return $this->successResponse('User transactions', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(),
-                Response::HTTP_NOT_FOUND);
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_NOT_FOUND
+            );
         }
     }
 
     /**
      * Create new transaction
      *
-     * @param  TransactionRequest $transactionRequest validation
+     * @param TransactionRequest $transactionRequest validation
      *
      * @return JsonResponse
      */
-    public function store(TransactionRequest $transactionRequest)
+    public function store(TransactionRequest $transactionRequest): JsonResponse
     {
         try {
             $res = $this->transactionRepository->createTransaction(
@@ -63,7 +65,8 @@ class TransactionController extends Controller
             );
             return $this->successResponse('Success', $res);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(), null);
+            return $this->errorResponse($exception->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED);
         }
     }
 }

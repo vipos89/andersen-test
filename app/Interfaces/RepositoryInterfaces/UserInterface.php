@@ -11,7 +11,7 @@ interface UserInterface
      * Create
      *
      * @param  UserRequest $request
-     * @method POST    api/users       For Create
+     * @method POST    api/users
      * @access public
      */
     public function requestUser(UserRequest $request);

@@ -8,17 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @property mixed satoshi_balance
+ * @property int satoshi_balance
  * @property int user_id
  */
 class Wallet extends Model
 {
 
     protected $guarded = [];
-    /**
-     * @var int
-     */
-    private $user_id;
 
     protected static function boot(): void
     {
@@ -47,8 +43,14 @@ class Wallet extends Model
     }
 
 
-    public function getBtcBalanceAttribute()
+    /**
+     * Mutator: converts satoshi to BTC
+     *
+     * @return int
+     */
+    public function getBtcBalanceAttribute(): int
     {
-        return $this->attributes['satoshi_balance'] / WalletRepository::START_SATOSHI_BALANCE;
+        return $this->attributes['satoshi_balance'] /
+            WalletRepository::START_SATOSHI_BALANCE;
     }
 }

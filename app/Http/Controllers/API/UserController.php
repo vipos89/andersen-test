@@ -32,7 +32,7 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      *
-     * @param  UserRequest $request validation
+     * @param UserRequest $request validation
      *
      * @return JsonResponse
      */
@@ -40,10 +40,13 @@ class UserController extends Controller
     {
         try {
             $user = $this->userRepository->requestUser($request);
-            return  $this->successResponse('User created',
-                    ['api_token'=>$user->api_token]);
+            return $this->successResponse(
+                'User created',
+                ['api_token' => $user->api_token]
+            );
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage(), []);
+            return $this->errorResponse($e->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED);
         }
     }
 }

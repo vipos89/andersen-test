@@ -15,11 +15,10 @@ use Illuminate\Support\Str;
 
 class UserRepository implements UserInterface
 {
-
     /**
      * Create new user
      *
-     * @param  UserRequest $request
+     * @param UserRequest $request
      * @return User
      * @throws Exception
      */

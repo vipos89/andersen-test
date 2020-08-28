@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Services\TransactionService;
 use App\Traits\Api\ApiResponse;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +23,7 @@ class TransactionRepository implements TransactionInterface
      * @param  $walletToId
      * @param  $amount       (satoshi)
      * @return mixed|void
-     * @throws \Exception
+     * @throws Exception
      */
     public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {

@@ -18,9 +18,7 @@ interface WalletInterface
     /**
      * Get wallet by address
      *
-     * @method GET api/wallets/{
-    address
-    }
+     * @method GET api/wallets/{address}
      * @param  $address
      * @return mixed
      */
@@ -29,9 +27,7 @@ interface WalletInterface
     /**
      * Get wallet transactions
      *
-     * @method GET api/wallets/{
-     * address
-     * }/transactions
+     * @method GET api/wallets/{address}/transactions
      * @param  $address
      * @return mixed
      */

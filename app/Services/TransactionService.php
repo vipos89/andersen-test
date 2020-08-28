@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Models\Commission;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +17,7 @@ class TransactionService
      * @param string $walletToId
      * @param int $amount
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function createTransaction(string $walletFromId, string $walletToId, int $amount)
     {
@@ -48,10 +49,10 @@ class TransactionService
                 DB::commit();
                 return $transaction;
             }
-            throw new \Exception('Not enough credentials');
-        } catch (\Exception $e) {
+            throw new Exception('Not enough credentials');
+        } catch (Exception $e) {
             Log::alert($e->getMessage());
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 }

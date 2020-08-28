@@ -18,7 +18,8 @@ class WalletRepository implements WalletInterface
 
 
     /**
-     * @param  int $userId
+     * @param int $userId
+     *
      * @return Wallet
      * @throws Exception
      */
@@ -28,8 +29,8 @@ class WalletRepository implements WalletInterface
         if ($walletsCount < config('wallets.wallets_max_count')) {
             return Wallet::create(
                 [
-                'user_id' => $userId,
-                'satoshi_balance' => self::START_SATOSHI_BALANCE
+                    'user_id' => $userId,
+                    'satoshi_balance' => self::START_SATOSHI_BALANCE
                 ]
             );
         }
@@ -39,7 +40,8 @@ class WalletRepository implements WalletInterface
     /**
      * Get info about wallet by hash
      *
-     * @param  string $hash
+     * @param string $hash
+     *
      * @return WalletResource
      */
     public function getWalletByHash(string $hash): WalletResource
@@ -50,7 +52,8 @@ class WalletRepository implements WalletInterface
     /**
      * Get all transactions by wallet
      *
-     * @param  string $address
+     * @param string $address
+     *
      * @return Collection|WalletTransaction
      */
     public function getWalletTransactions(string $address)
