@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WalletResource;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
 use App\Traits\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -40,10 +41,12 @@ class WalletController extends Controller
             $data = $this->walletRepository->createWallet(
                 auth()->user()->getAuthIdentifier()
             );
-            return $this->successResponse('Wallet created', $data);
+            return $this->successResponse('Wallet created', new WalletResource($data));
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(),
-                Response::HTTP_EXPECTATION_FAILED);
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED
+            );
         }
     }
 
@@ -60,8 +63,10 @@ class WalletController extends Controller
             $data = $this->walletRepository->getWalletByHash($id);
             return $this->successResponse('Wallet info', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(),
-                Response::HTTP_NOT_FOUND);
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_NOT_FOUND
+            );
         }
     }
 
@@ -78,8 +83,10 @@ class WalletController extends Controller
             $data = $this->walletRepository->getWalletTransactions($walletId);
             return $this->successResponse('Transactions info', $data);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(),
-                Response::HTTP_NOT_FOUND);
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_NOT_FOUND
+            );
         }
     }
 }

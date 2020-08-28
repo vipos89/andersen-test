@@ -45,8 +45,10 @@ class UserController extends Controller
                 ['api_token' => $user->api_token]
             );
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage(),
-                Response::HTTP_EXPECTATION_FAILED);
+            return $this->errorResponse(
+                $e->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED
+            );
         }
     }
 }

@@ -65,8 +65,10 @@ class TransactionController extends Controller
             );
             return $this->successResponse('Success', $res);
         } catch (\Exception $exception) {
-            return $this->errorResponse($exception->getMessage(),
-                Response::HTTP_EXPECTATION_FAILED);
+            return $this->errorResponse(
+                $exception->getMessage(),
+                Response::HTTP_EXPECTATION_FAILED
+            );
         }
     }
 }
