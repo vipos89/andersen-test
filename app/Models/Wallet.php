@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Repositories\WalletRepository;
+use GabrielAndy\Coindesk\Facades\Coindesk;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -53,5 +53,14 @@ class Wallet extends Model
     {
         return $this->attributes['satoshi_balance'] /
             Wallet::START_SATOSHI_BALANCE;
+    }
+
+    /**
+     * Mutator: converts satoshi to usd
+     *
+     */
+    public function getUsdBalanceAttribute()
+    {
+        return Coindesk::toCurrency('usd', 1);
     }
 }

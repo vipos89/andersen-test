@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('users', 'API\UserController@store');
+
 Route::middleware('auth:api')->namespace('API')->group(static function () {
     Route::resource('users', 'UserController')->except(['store']);
     Route::get('wallets/{wallet}/transactions', 'WalletController@transactions');

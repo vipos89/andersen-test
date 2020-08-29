@@ -50,6 +50,6 @@ trait ApiResponse
      */
     public function errorResponse($message, $code = Response::HTTP_INTERNAL_SERVER_ERROR, $data = null): JsonResponse
     {
-        return $this->baseResponse($message, $data, $code);
+        return $this->baseResponse($message,  $code, $data);
     }
 }

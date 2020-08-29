@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Services\WalletService;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WalletRepository implements WalletInterface

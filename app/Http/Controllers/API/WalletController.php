@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
+
 class   WalletController extends Controller
 {
     use ApiResponse;
@@ -47,7 +48,8 @@ class   WalletController extends Controller
         } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                []
             );
         }
     }
