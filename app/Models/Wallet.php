@@ -61,6 +61,6 @@ class Wallet extends Model
      */
     public function getUsdBalanceAttribute()
     {
-        return Coindesk::toCurrency('usd', 1);
+        return Coindesk::toCurrency('usd', $this->btc_balance);
     }
 }
