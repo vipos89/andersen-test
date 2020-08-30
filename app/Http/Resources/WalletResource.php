@@ -39,8 +39,8 @@ class WalletResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'btc' => $this->walletService->convertToBTC($this->satoshi_balance),
-            'usd' => $this->walletService->convertToUsd($this->satoshi_balance),
+            'btc' => $this->walletService->convertToBTC((int)$this->satoshi_balance),
+            'usd' => $this->walletService->convertToUsd((int)$this->satoshi_balance),
         ];
     }
 }
