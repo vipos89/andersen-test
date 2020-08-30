@@ -8,8 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * @property string password
- * @property string api_token
+ * @property string $password
+ * @property string $api_token
+ * @property string $name
+ * @property string $email
+ * @property string $remember_token
  */
 class User extends Authenticatable
 {

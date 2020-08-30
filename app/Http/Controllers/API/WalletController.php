@@ -6,11 +6,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WalletResource;
 use App\Interfaces\RepositoryInterfaces\WalletInterface;
+use App\Services\WalletService;
 use App\Traits\Api\ApiResponse;
-use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-
+use Exception;
 
 class   WalletController extends Controller
 {
@@ -39,12 +40,11 @@ class   WalletController extends Controller
     public function store(): JsonResponse
     {
         try {
-            $data = $this->walletRepository->createWallet(
-                auth()->user()->getAuthIdentifier()
-            );
+            $data = (new WalletService())->createWalletForUser(auth()->user()->getAuthIdentifier());
             return $this->successResponse(
                 'Wallet created',
-                new WalletResource($data));
+                new WalletResource($data)
+            );
         } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
@@ -64,8 +64,11 @@ class   WalletController extends Controller
     public function show(string $id): JsonResponse
     {
         try {
-            $data = $this->walletRepository->getWalletByHash($id);
-            return $this->successResponse('Wallet info', new WalletResource($data));
+            $wallet = $this->walletRepository->getWalletByHash($id);
+            if (!$wallet) {
+                throw new ModelNotFoundException('Wallet not found');
+            }
+            return $this->successResponse('Wallet info', new WalletResource($wallet));
         } catch (Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),

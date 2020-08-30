@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Interfaces\RepositoryInterfaces\UserInterface;
+use App\Services\UserService;
 use App\Traits\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -13,20 +13,6 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     use ApiResponse;
-    /**
-     * @var UserInterface
-     */
-    private $userRepository;
-
-    /**
-     * UserController constructor.
-     *
-     * @param UserInterface $userRepository repository implementation
-     */
-    public function __construct(UserInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
 
     /**
      * Store a newly created user in storage.
@@ -38,7 +24,7 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         try {
-            $user = $this->userRepository->requestUser($request);
+            $user = (new UserService())->createUser($request->all());
             return $this->successResponse(
                 'User created',
                 ['api_token' => $user->api_token]

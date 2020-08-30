@@ -1,11 +1,12 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Services;
 
 
 use App\Models\Wallet;
 use Exception;
+use GabrielAndy\Coindesk\Facades\Coindesk;
 
 class WalletService
 {
@@ -26,5 +27,26 @@ class WalletService
             );
         }
         throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
+    }
+
+    /**
+     * Convert Satoshi to btc
+     *
+     * @param int $satochiBalance
+     * @return float|int
+     */
+    public function convertToBTC(int $satochiBalance)
+    {
+        return $satochiBalance / Wallet::START_SATOSHI_BALANCE;
+    }
+
+    /**
+     * @param int $satoshiBalance
+     *
+     * @return  float|int
+     */
+    public function convertToUsd(int $satoshiBalance)
+    {
+        return Coindesk::toCurrency('usd', $this->convertToBTC($satoshiBalance));
     }
 }

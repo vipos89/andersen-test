@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @property int satoshi_balance
- * @property int user_id
+ * @property int $satoshi_balance
+ * @property int $user_id
+ * @property string $id
  */
 class Wallet extends Model
 {

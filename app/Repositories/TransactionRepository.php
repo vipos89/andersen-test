@@ -13,26 +13,9 @@ use Illuminate\Support\Collection;
 class TransactionRepository implements TransactionInterface
 {
     /**
-     * Create transaction from wallet to wallet
-     *
-     * @param  $walletFromId
-     * @param  $walletToId
-     * @param  $amount (satoshi)
-     *
-     * @return WalletTransaction
-     * @throws Exception
-     */
-    public function createTransaction(string $walletFromId, string $walletToId, int $amount): WalletTransaction
-    {
-        return (new TransactionService())
-            ->createTransaction($walletFromId, $walletToId, $amount);
-    }
-
-
-    /**
      * Get all user transactions
      *
-     * @param  int $userId
+     * @param int $userId
      *
      * @return Collection|Wallet
      */

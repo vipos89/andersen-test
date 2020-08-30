@@ -10,7 +10,6 @@ use App\Models\WalletTransaction;
 use App\Services\WalletService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WalletRepository implements WalletInterface
 {
@@ -22,7 +21,7 @@ class WalletRepository implements WalletInterface
      */
     public function createWallet(int $userId): Wallet
     {
-        return (new WalletService())->createWalletForUser($userId);
+
     }
 
     /**
@@ -30,16 +29,11 @@ class WalletRepository implements WalletInterface
      *
      * @param string $hash
      *
-     * @return WalletResource
+     * @return Wallet
      */
-    public function getWalletByHash(string $hash): WalletResource
+    public function getWalletByHash(string $hash): Wallet
     {
-        $wallet = Wallet::find($hash);
-        if (!$wallet) {
-            throw new ModelNotFoundException('Wallet not found');
-        }
-
-        return new WalletResource($wallet);
+        return Wallet::find($hash);
     }
 
     /**

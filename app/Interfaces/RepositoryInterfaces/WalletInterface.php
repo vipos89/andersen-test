@@ -6,13 +6,6 @@ namespace App\Interfaces\RepositoryInterfaces;
 
 interface WalletInterface
 {
-    /**
-     * Create new Wallet for current user
-     *
-     * @param  int $userId
-     * @return mixed
-     */
-    public function createWallet(int $userId);
 
     /**
      * Get wallet by address

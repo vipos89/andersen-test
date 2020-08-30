@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -17,7 +17,7 @@ class UserService
     public function createUser(array $data): User
     {
         $data['password'] = Hash::make($data['password']);
-        $data['api_token'] =  Str::random(80);
+        $data['api_token'] = Str::random(80);
         return factory(User::class)->create($data);
     }
 }

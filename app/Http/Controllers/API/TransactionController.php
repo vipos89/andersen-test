@@ -6,7 +6,9 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\ExceedingLimitException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
+use App\Services\TransactionService;
 use App\Traits\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -39,8 +41,13 @@ class TransactionController extends Controller
     {
         try {
             $data = $this->transactionRepository
-                ->getUserTransactions(auth()->user()->getAuthIdentifier());
-            return $this->successResponse('User transactions', $data);
+                ->getUserTransactions(
+                    auth()->user()->getAuthIdentifier()
+                );
+            return $this->successResponse(
+                'User transactions',
+                TransactionResource::collection($data)
+            );
         } catch (\Exception $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
@@ -59,12 +66,16 @@ class TransactionController extends Controller
     public function store(TransactionRequest $transactionRequest): JsonResponse
     {
         try {
-            $res = $this->transactionRepository->createTransaction(
-                $transactionRequest->input('from'),
-                $transactionRequest->input('to'),
-                (int)$transactionRequest->input('amount')
+            $res = (new TransactionService())
+                ->createTransaction(
+                    $transactionRequest->input('from'),
+                    $transactionRequest->input('to'),
+                    (int)$transactionRequest->input('amount')
+                );
+            return $this->successResponse(
+                'Success',
+                new TransactionResource($res)
             );
-            return $this->successResponse('Success', $res);
         } catch (ExceedingLimitException $exception) {
             return $this->errorResponse(
                 $exception->getMessage(),
