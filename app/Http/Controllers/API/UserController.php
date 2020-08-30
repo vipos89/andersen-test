@@ -15,6 +15,21 @@ class UserController extends Controller
     use ApiResponse;
 
     /**
+     * @var UserService
+     */
+    private $userService;
+
+
+    /**
+     * UserController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
      * Store a newly created user in storage.
      *
      * @param UserRequest $request validation
@@ -24,7 +39,7 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         try {
-            $user = (new UserService())->createUser($request->all());
+            $user = $this->userService->createUser($request->all());
             return $this->successResponse(
                 'User created',
                 ['api_token' => $user->api_token]

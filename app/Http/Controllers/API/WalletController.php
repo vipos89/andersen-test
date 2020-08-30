@@ -21,15 +21,21 @@ class   WalletController extends Controller
      * @var WalletInterface
      */
     private $walletRepository;
+    /**
+     * @var WalletService
+     */
+    private $walletService;
 
     /**
      * WalletController constructor.
      *
      * @param WalletInterface $walletRepository (walletRepository)
+     * @param WalletService $walletService
      */
-    public function __construct(WalletInterface $walletRepository)
+    public function __construct(WalletInterface $walletRepository, WalletService $walletService)
     {
         $this->walletRepository = $walletRepository;
+        $this->walletService = $walletService;
     }
 
     /**
@@ -40,7 +46,10 @@ class   WalletController extends Controller
     public function store(): JsonResponse
     {
         try {
-            $data = (new WalletService())->createWalletForUser(auth()->user()->getAuthIdentifier());
+            $data = $this->walletService
+                ->createWalletForUser(
+                    auth()->user()->getAuthIdentifier()
+                );
             return $this->successResponse(
                 'Wallet created',
                 new WalletResource($data)

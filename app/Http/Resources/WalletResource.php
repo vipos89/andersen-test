@@ -14,6 +14,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class WalletResource extends JsonResource
 {
     /**
+     * @var WalletService
+     */
+    private $walletService;
+
+    /**
+     * WalletResource constructor.
+     * @param $resource
+     */
+    public function __construct($resource)
+    {
+        $this->walletService = resolve(WalletService::class);
+        parent::__construct($resource);
+    }
+
+    /**
      * Transform the resource into an array.
      *
      *
@@ -22,11 +37,10 @@ class WalletResource extends JsonResource
      */
     public function toArray($request): array
     {
-        $walletService = new WalletService();
         return [
             'id' => $this->id,
-            'btc' => $walletService->convertToBTC($this->satoshi_balance),
-            'usd' => $this->$walletService->convertToUsd($this->satoshi_balance),
+            'btc' => $this->walletService->convertToBTC($this->satoshi_balance),
+            'usd' => $this->walletService->convertToUsd($this->satoshi_balance),
         ];
     }
 }

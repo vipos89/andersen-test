@@ -21,15 +21,21 @@ class TransactionController extends Controller
      * @var TransactionInterface
      */
     private $transactionRepository;
+    /**
+     * @var TransactionService
+     */
+    private $transactionService;
 
     /**
      * TransactionController constructor.
      *
      * @param TransactionInterface $transactionRepository repository
+     * @param TransactionService $transactionService
      */
-    public function __construct(TransactionInterface $transactionRepository)
+    public function __construct(TransactionInterface $transactionRepository, TransactionService $transactionService)
     {
         $this->transactionRepository = $transactionRepository;
+        $this->transactionService = $transactionService;
     }
 
     /**
@@ -66,7 +72,7 @@ class TransactionController extends Controller
     public function store(TransactionRequest $transactionRequest): JsonResponse
     {
         try {
-            $res = (new TransactionService())
+            $res = $this->transactionService
                 ->createTransaction(
                     $transactionRequest->input('from'),
                     $transactionRequest->input('to'),
