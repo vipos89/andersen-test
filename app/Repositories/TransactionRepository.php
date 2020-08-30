@@ -6,8 +6,6 @@ namespace App\Repositories;
 use App\Interfaces\RepositoryInterfaces\TransactionInterface;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
-use App\Services\TransactionService;
-use Exception;
 use Illuminate\Support\Collection;
 
 class TransactionRepository implements TransactionInterface
