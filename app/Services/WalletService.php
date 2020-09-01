@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Wallet;
 use Exception;
 use GabrielAndy\Coindesk\Facades\Coindesk;
+use Illuminate\Support\Facades\DB;
 
 class WalletService
 {
@@ -17,15 +18,19 @@ class WalletService
      */
     public function createWalletForUser(int $userId): Wallet
     {
+
         $walletsCount = Wallet::where('user_id', $userId)->count();
         if ($walletsCount < config('wallets.wallets_max_count')) {
-            return Wallet::create(
-                [
-                    'user_id' => $userId,
-                    'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
-                ]
-            );
+            return DB::transaction(static function () use ($userId) {
+                return Wallet::create(
+                    [
+                        'user_id' => $userId,
+                        'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
+                    ]
+                );
+            });
         }
+
         throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
     }
 

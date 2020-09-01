@@ -19,6 +19,8 @@ class CreateWalletTransactionsTable extends Migration
             $table->uuid('to');
             $table->unsignedBigInteger('amount');
             $table->unsignedBigInteger('commission');
+            $table->foreign('from')->references('id')->on('wallets');
+            $table->foreign('to')->references('id')->on('wallets');
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class UserService
     {
         $data['password'] = Hash::make($data['password']);
         $data['api_token'] = Str::random(80);
+
         return factory(User::class)->create($data);
     }
 }
