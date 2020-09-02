@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 class TransactionService
 {
     /**
-     * @param string $walletFromId
-     * @param string $walletToId
-     * @param int $amount
+     * @param  string $walletFromId
+     * @param  string $walletToId
+     * @param  int    $amount
      * @return WalletTransaction
      * @throws Exception
      */
@@ -47,13 +47,15 @@ class TransactionService
                         'commission' => $commission,
                     ]
                 );
+
                 DB::commit();
+
                 return $transaction;
             }
             throw new ExceedingLimitException('Not enough credentials');
         } catch (Exception $exception) {
-          DB::rollBack();
-          throw new Exception($exception->getMessage());
+            DB::rollBack();
+            throw new Exception($exception->getMessage());
         }
     }
 }

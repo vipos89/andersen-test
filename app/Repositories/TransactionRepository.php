@@ -20,6 +20,7 @@ class TransactionRepository implements TransactionInterface
     public function getUserTransactions($userId): Collection
     {
         $walletIds = Wallet::where('user_id', $userId)->pluck('id')->toArray();
+
         return WalletTransaction::whereIn('from', $walletIds)
             ->orWhereIn('to', $walletIds)
             ->get();

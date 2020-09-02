@@ -20,6 +20,7 @@ class WalletResource extends JsonResource
 
     /**
      * WalletResource constructor.
+     *
      * @param $resource
      */
     public function __construct($resource)
@@ -31,8 +32,7 @@ class WalletResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     *
-     * @param Request $request
+     * @param  Request $request
      * @return array
      */
     public function toArray($request): array

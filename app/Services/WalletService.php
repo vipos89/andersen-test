@@ -12,32 +12,41 @@ use Illuminate\Support\Facades\DB;
 class WalletService
 {
     /**
-     * @param int $userId
+     * @param  int $userId
      * @return Wallet
      * @throws Exception
      */
     public function createWalletForUser(int $userId): Wallet
     {
-
-        $walletsCount = Wallet::where('user_id', $userId)->count();
-        if ($walletsCount < config('wallets.wallets_max_count')) {
-            return DB::transaction(static function () use ($userId) {
-                return Wallet::create(
+        DB::beginTransaction();
+        try {
+            $walletsCount = Wallet::where('user_id', $userId)->lockForUpdate()->count();
+            if ($walletsCount < config('wallets.wallets_max_count')) {
+                $wallet = Wallet::create(
                     [
                         'user_id' => $userId,
                         'satoshi_balance' => Wallet::START_SATOSHI_BALANCE
                     ]
                 );
-            });
+
+                DB::commit();
+
+                return $wallet;
+            }
+            throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new Exception($exception->getMessage());
         }
 
-        throw new Exception("Can't create more than " . config('wallets.wallets_max_count') . " wallets for user");
+
     }
 
     /**
      * Convert Satoshi to btc
      *
-     * @param int $satochiBalance
+     * @param  int $satochiBalance
      * @return float|int
      */
     public function convertToBTC(int $satochiBalance)
@@ -48,7 +57,7 @@ class WalletService
     /**
      * @param int $satoshiBalance
      *
-     * @return  float|int
+     * @return float|int
      */
     public function convertToUsd(int $satoshiBalance)
     {

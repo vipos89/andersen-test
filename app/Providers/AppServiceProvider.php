@@ -16,15 +16,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(WalletService::class, static function($app){
-            return new WalletService();
-        });
-        $this->app->singleton(UserService::class, static function($app){
-            return new UserService();
-        });
-        $this->app->singleton(TransactionService::class, static function($app){
-            return new TransactionService();
-        });
+        $this->app->singleton(
+            WalletService::class, static function ($app) {
+                return new WalletService();
+            }
+        );
+        $this->app->singleton(
+            UserService::class, static function ($app) {
+                return new UserService();
+            }
+        );
+        $this->app->singleton(
+            TransactionService::class, static function ($app) {
+                return new TransactionService();
+            }
+        );
     }
 
     /**

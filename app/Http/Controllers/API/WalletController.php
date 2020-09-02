@@ -30,7 +30,7 @@ class   WalletController extends Controller
      * WalletController constructor.
      *
      * @param WalletInterface $walletRepository (walletRepository)
-     * @param WalletService $walletService
+     * @param WalletService   $walletService
      */
     public function __construct(WalletInterface $walletRepository, WalletService $walletService)
     {
@@ -50,6 +50,7 @@ class   WalletController extends Controller
                 ->createWalletForUser(
                     auth()->user()->getAuthIdentifier()
                 );
+
             return $this->successResponse(
                 'Wallet created',
                 new WalletResource($data)
@@ -77,6 +78,7 @@ class   WalletController extends Controller
             if (!$wallet) {
                 throw new ModelNotFoundException('Wallet not found');
             }
+
             return $this->successResponse('Wallet info', new WalletResource($wallet));
         } catch (Exception $exception) {
             return $this->errorResponse(
@@ -97,6 +99,7 @@ class   WalletController extends Controller
     {
         try {
             $data = $this->walletRepository->getWalletTransactions($walletId);
+
             return $this->successResponse(
                 'Transactions info',
                 WalletResource::collection($data)

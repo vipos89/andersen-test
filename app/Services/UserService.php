@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class UserService
 {
     /**
-     * @param array $data
+     * @param  array $data
      * @return User
      */
     public function createUser(array $data): User

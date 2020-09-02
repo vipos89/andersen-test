@@ -30,7 +30,7 @@ class TransactionController extends Controller
      * TransactionController constructor.
      *
      * @param TransactionInterface $transactionRepository repository
-     * @param TransactionService $transactionService
+     * @param TransactionService   $transactionService
      */
     public function __construct(TransactionInterface $transactionRepository, TransactionService $transactionService)
     {
@@ -50,11 +50,13 @@ class TransactionController extends Controller
                 ->getUserTransactions(
                     auth()->user()->getAuthIdentifier()
                 );
+
             return $this->successResponse(
                 'User transactions',
                 TransactionResource::collection($data)
             );
         } catch (\Exception $exception) {
+
             return $this->errorResponse(
                 $exception->getMessage(),
                 Response::HTTP_NOT_FOUND
@@ -78,6 +80,7 @@ class TransactionController extends Controller
                     $transactionRequest->input('to'),
                     (int)$transactionRequest->input('amount')
                 );
+
             return $this->successResponse(
                 'Success',
                 new TransactionResource($res)

@@ -9,9 +9,9 @@ use Illuminate\Http\Response;
 trait ApiResponse
 {
     /**
-     * @param  $message
+     * @param $message
      * @param null $data
-     * @param  $statusCode
+     * @param $statusCode
      * @param bool $isSuccess
      *
      * @return JsonResponse
